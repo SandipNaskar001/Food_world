@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Food = () => {
   const [mealdata, setMealData] = useState([]);
@@ -18,7 +19,7 @@ const Food = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const api = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${inputData}`);
+    const api = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${inputData.trim()}`);
     const data = await api.json();
     if (data.meals) {
       setMealData(data.meals);
@@ -27,28 +28,28 @@ const Food = () => {
     }
   };
 
-
   return (
     <>
-
       <div className="text-center my-4">
         <h1 style={{ fontWeight: 'bold', fontSize: '3rem', color: '#ff6600' }}>
           Welcome to Food World
         </h1>
         <p style={{ fontSize: '1.2rem', color: '#555' }}>
-          Discover delicious meals from around the globe! Click a region below to explore their traditional dishes.
+          Discover delicious meals from around the globe! Click a region below to explore their traditional dishes, search for your favorite meals and recipie.
         </p>
       </div>
 
-      <div>
+      <form onSubmit={submitHandler}>
+        <div className="text-center my-4">
+          <input
+            type="text"
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Search for a meal..."
+            className="form-control w-50 mx-auto"
 
-        <form onSubmit={submitHandler}>
-          <div className="text-center my-4">
-            <input type="text" onChange={(e) => setInput(e.target.value)} placeholder="Search for a meal..." className="form-control w-50 mx-auto" />
-          </div>
-        </form>
-      </div>
-
+          />
+        </div>
+      </form>
 
       <div className="d-flex justify-content-center flex-wrap my-4">
 
@@ -60,14 +61,12 @@ const Food = () => {
         <button type="button" onClick={() => setarea("russian")} className="btn btn-outline-info mx-2 my-1 btn-lg">Russian</button>
         <button type="button" onClick={() => setarea("italian")} className="btn btn-outline-info mx-2 my-1 btn-lg">Italian</button>
         <button type="button" onClick={() => setarea("american")} className="btn btn-outline-info mx-2 my-1 btn-lg">american</button>
-     
+
       </div>
 
-
-      <div className="container"
-
+      <div
+        className="container"
         style={{
-
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -75,45 +74,61 @@ const Food = () => {
           gap: '40px',
           marginTop: '20px',
           marginBottom: '40px',
-
-
-
-
-        }}>
+        }}
+      >
         {mealdata.map((meal) => (
-          <div
-            key={meal.idMeal}
-            className="p-2"
-            style={{
-              width: '250px',
-              textAlign: 'center',
-              border: '1px solid #ddd',
-              borderRadius: '12px',
-              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-              backgroundColor: '#fff',
-            }}>
-            <img
-              src={meal.strMealThumb}
-              alt={meal.strMeal}
+          <Link to={`/meal/${meal.idMeal}`} key={meal.idMeal} style={{ textDecoration: 'none' }}>
+            <div
+              className="p-2"
               style={{
-                height: '280px',
-                width: '100%',
-                borderRadius: '10px',
-                border: '2px solid orange',
-                boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                width: '250px',
+                textAlign: 'center',
+                border: '1px solid #ddd',
+                borderRadius: '12px',
+                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+                backgroundColor: '#fff',
               }}
-            />
-            <h5 className="mt-3 mb-3" style={{ color: '#333' }}>
-              {meal.strMeal}
-            </h5>
-          </div>
-
+            >
+              <img
+                src={meal.strMealThumb}
+                alt={meal.strMeal}
+                style={{
+                  height: '280px',
+                  width: '100%',
+                  borderRadius: '10px',
+                  border: '2px solid orange',
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                }}
+              />
+              <h5 className="mt-3 mb-3" style={{ color: '#333' }}>
+                {meal.strMeal}
+              </h5>
+            </div>
+          </Link>
         ))}
-
       </div>
+
+      <footer style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+        position: 'fixed',
+        left: 0,
+        right: 0,
+      
+        top: 'auto',
+        margin: 0,
+        bottom: 0,
+        backgroundColor: '#222',
+        color: 'white',
+        textAlign: 'center',
+      
+
+      }}>
+        <p>&copy; {new Date().getFullYear()} Sandip Naskar. All rights reserved.</p>
+      </footer>
     </>
   );
 };
 
 export default Food;
-

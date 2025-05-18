@@ -3,3 +3,11 @@ body{
   color: #fff;
   font-family:Verdana, Geneva, Tahoma, sans-serif
 }
+.custom-font {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+ 
+  font-style: italic;
+  font-size: 1em;
+
+
+}
